@@ -13,17 +13,21 @@ class TestUser(BaseTestCase):
         # Ensure user registration behaves correctly.
         with self.client:
             self.client.get("/logout", follow_redirects=True)
-            self.client.post(
+            response = self.client.post(
                 "/register",
                 data=dict(
                     email="test@user.com", password="test_user", confirm="test_user"
                 ),
                 follow_redirects=True,
-            )
-            user = User.query.filter_by(email="test@user.com").first()
-            self.assertTrue(user.id)
-            self.assertTrue(user.email == "test@user.com")
-            self.assertFalse(user.is_admin)
+            )            
+            if self.app.config['ALLOW_NEW_REGISTRATIONS']:
+                user = User.query.filter_by(email="test@user.com").first()
+                self.assertTrue(user.id)
+                self.assertTrue(user.email == "test@user.com")
+                self.assertFalse(user.is_admin)
+            else:
+                self.assertTrue(response.status_code == 200)
+                self.assertIn(b'New registrations are not allowed', response.data)
 
     def test_get_by_id(self):
         # Ensure id is correct for the current/logged in user
