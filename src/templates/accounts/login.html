@@ -33,7 +33,9 @@
             {% endif %}
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        <p class="text-center mt-3">New User? <a href="{{ url_for('accounts.register') }}">Register now</a></p>
+        {% if config['ALLOW_NEW_REGISTRATIONS'] %}
+          <p class="text-center mt-3">New User? <a href="{{ url_for('accounts.register') }}">Register now</a></p>
+        {% endif %}
       </form>
     </main>
   </div>

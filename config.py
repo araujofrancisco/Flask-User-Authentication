@@ -4,6 +4,7 @@ DATABASE_URI = config("DATABASE_URL")
 if DATABASE_URI.startswith("postgres://"):
     DATABASE_URI = DATABASE_URI.replace("postgres://", "postgresql://", 1)
 
+ALLOW_REGISTRATIONS = config("ALLOW_REGISTRATIONS", cast=bool)
 
 class Config(object):
     DEBUG = False
@@ -16,6 +17,7 @@ class Config(object):
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
+    ALLOW_NEW_REGISTRATIONS = ALLOW_REGISTRATIONS
 
 
 class DevelopmentConfig(Config):

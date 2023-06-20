@@ -11,7 +11,9 @@
         <a href="{{ url_for('accounts.logout') }}"><button type="button" class="btn btn-danger me-2">Logout</button></a>
         {% else %}
           <a href="{{ url_for('accounts.login') }}"><button type="button" class="btn btn-outline-light me-2">Login</button></a>
-          <a href="{{ url_for('accounts.register') }}"><button type="button" class="btn btn-success">Sign up</button></a>
+          {% if config['ALLOW_NEW_REGISTRATIONS'] %}
+            <a href="{{ url_for('accounts.register') }}"><button type="button" class="btn btn-success">Sign up</button></a>
+          {% endif %}
         {% endif %}
           
       </div>

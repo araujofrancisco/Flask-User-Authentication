@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, current_app
 from flask_login import login_required, login_user, logout_user, current_user
 
 from src import bcrypt, db
@@ -11,6 +11,9 @@ accounts_bp = Blueprint("accounts", __name__)
 
 @accounts_bp.route("/register", methods=["GET", "POST"])
 def register():
+    if not current_app.config["ALLOW_NEW_REGISTRATIONS"]:
+        flash("New registrations are not allowed.", "danger")
+        return redirect(url_for("accounts.login"))
     if current_user.is_authenticated:
         flash("You are already registered.", "info")
         return redirect(url_for("core.home"))
