@@ -23,3 +23,9 @@ flask db upgrade
 
 python manage.py run
 ```
+
+### Changes from original project
+
+```
+Does includes a configuration setting to disable new users registration.
+```
