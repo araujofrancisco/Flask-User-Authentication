@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from base_test import BaseTestCase
 
@@ -6,6 +7,7 @@ from src import app
 
 
 class TestConfig(BaseTestCase):
+    @unittest.skip("Skipping test to avoid overwrite db")
     def test_development_config(self):           
         app.config.from_object('config.DevelopmentConfig')
         assert app.config['DEBUG']
@@ -22,6 +24,7 @@ class TestConfig(BaseTestCase):
             'DATABASE_TEST_URL')
         
 
+    @unittest.skip("Skipping test to avoid overwrite db")
     def test_production_config(self):
         app.config.from_object('config.ProductionConfig')
         assert not app.config['DEBUG']
