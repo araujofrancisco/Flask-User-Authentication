@@ -4,6 +4,7 @@ DATABASE_URI = config("DATABASE_URL")
 if DATABASE_URI.startswith("postgres://"):
     DATABASE_URI = DATABASE_URI.replace("postgres://", "postgresql://", 1)
 
+DATABASE_TEST_URI = config("DATABASE_TEST_URL")
 ALLOW_REGISTRATIONS = config("ALLOW_REGISTRATIONS", cast=bool)
 
 class Config(object):
@@ -17,6 +18,7 @@ class Config(object):
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
     ALLOW_NEW_REGISTRATIONS = ALLOW_REGISTRATIONS
 
 
@@ -30,7 +32,8 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///testdb.sqlite"
+    #SQLALCHEMY_DATABASE_URI = "sqlite:///testdb.sqlite"
+    SQLALCHEMY_DATABASE_URI = DATABASE_TEST_URI
     BCRYPT_LOG_ROUNDS = 1
     WTF_CSRF_ENABLED = False
 
