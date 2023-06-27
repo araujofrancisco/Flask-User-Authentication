@@ -1,0 +1,33 @@
+<!-- Modal for inserting the user -->
+<div id="{{ dialog_id }}" class="modal fade">
+    <div class="modal-dialog">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h4 class="modal-title">{{ dialog_title }}</h4>
+          </div>
+          <div class="modal-body">
+ 
+             <form action="{{ action_url }}" method="POST">
+                <div class="form-group">
+                   <label>Email:</label>
+                   <input type="email" class="form-control" name="email" required="1" value="{{user.email}}" >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-check-label" for="is-admin-check">Is Admin:</label>
+                    <input type="checkbox" class="form-check-input" name="is-admin-check" checked="{{user.is_admin}}" id="is-admin-check">
+                 </div> 
+                
+                <div class="form-group">
+                   <button class="btn btn-primary mt-4" type="submit">{{ submit_btn }}</button>
+                </div>  
+             </form>
+          </div> 
+ 
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+ 
+       </div>
+    </div>
+</div>    

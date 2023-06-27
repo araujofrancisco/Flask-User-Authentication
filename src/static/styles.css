@@ -1,3 +1,15 @@
+@media (min-width: 940px) {
+  .container, .container-md, .container-sm {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container, .container-md, .container-sm {
+    max-width: 1400px;
+  }
+}
+
 .error {
   color: red;
   margin-bottom: 5px;
@@ -7,3 +19,42 @@
 a {
   text-decoration: none;
 }
+
+.jumbotron {
+  background-color: #d3d3d3;
+  margin-top: 4px;
+  padding: 15px;
+  max-height: 60vh;
+}
+
+.card-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.form-group {
+  padding-top: 5px;
+}
+
+.user-table tr {
+  vertical-align: middle;
+}
+
+/*
+.user-table {
+  width: 100%;
+  border: 1px solid black;   
+  margin-bottom: 10px; 
+}
+
+.user-table th {
+  padding: 5px;
+  background-color:lightgray;
+  border-bottom: 1px solid black;
+}
+*/

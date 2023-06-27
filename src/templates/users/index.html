@@ -1,0 +1,53 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="jumbotron rounded">
+                <div class="card-title pb-3">
+                    <h2>Users Management</h2> 
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dialog-add">Add User</button>
+                </div>
+                <table class="table table-hover table-dark user-table">
+                    <thead>
+                        <th>Id</th>
+                        <th>Email</th>
+                        <th>Created On</th>
+                        <th>Is Admin</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>                        
+                        {% for user in users %}
+                            <tr>
+                                <td>{{user.id}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.created_on}}</td>
+                                <td><input type="checkbox" checked="{{user.is_admin}}"></td>                    
+                                <td class="user-actions">
+                                    <a href="" class="btn btn-warning btn-xs" id="edit-{{user.id}}" data-bs-toggle="modal" data-bs-target="#dialog-edit{{loop.index}}" data-user-id="{{user.id}}">Edit</a>
+                                    <a href="" class="btn btn-danger" id="delete-{{user.id}}" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                                </td>                        
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% with dialog_id = "dialog-add", action_url = url_for('users.home'),
+        dialog_title = "Add User", submit_btn = "Save", user = None %}
+    {% include "dialog.html" %}
+{% endwith %}
+
+{% for user in users %}
+    {% with dialog_id = "dialog-edit" + loop.index|string, action_url = url_for('users.home'),
+            dialog_title = "Edit User", submit_btn = "Save", user = user %}
+        {% include "dialog.html" %}
+    {% endwith %}
+{% endfor %}
+
+{% endblock %}
