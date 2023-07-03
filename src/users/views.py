@@ -22,3 +22,8 @@ def home():
     if request.method == 'POST':
         pass
     return render_template("users/index.html", **locals())
+
+@users_bp.route("/access", methods=['GET','POST'])
+@login_required
+def access():
+    return render_template("users/access.html", **locals())
