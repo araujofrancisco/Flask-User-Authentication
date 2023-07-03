@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField
+from wtforms import EmailField, PasswordField, StringField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from src.accounts.models import User
@@ -8,9 +8,15 @@ from src.accounts.models import User
 class LoginForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
+    #if request.method == 'POST':
+        # email = request.form['email']
+        # is_admin = request.form['is_admin']
+    
 
 
 class RegisterForm(FlaskForm):
+    action = StringField('action', validators=[DataRequired()]
+    )
     email = EmailField(
         "Email", validators=[DataRequired(), Email(message=None), Length(min=6, max=40)]
     )
@@ -24,6 +30,10 @@ class RegisterForm(FlaskForm):
             EqualTo("password", message="Passwords must match."),
         ],
     )
+    is_admin = BooleanField(
+        "Is Admin"        
+    )
+    
 
     def validate(self, extra_validators=None):
         initial_validation = super(RegisterForm, self).validate(extra_validators)

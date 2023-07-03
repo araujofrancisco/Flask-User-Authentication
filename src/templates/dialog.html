@@ -6,16 +6,82 @@
              <h4 class="modal-title">{{ dialog_title }}</h4>
           </div>
           <div class="modal-body">
- 
-             <form action="{{ action_url }}" method="POST">
-                <div class="form-group">
-                   <label>Email:</label>
-                   <input type="email" class="form-control" name="email" required="1" value="{{user.email}}" >
+      
+             <form role="form" action="{{ action_url }}" method="POST">
+               {{ form.csrf_token }}
+
+               <div class="form-group">
+                  <input type="hidden" class="form-control" name="action" value="{{ dialog_id }}" />
+               </div>
+
+               <div class="form-floating">                     
+                  {% if dialog_id.startswith('dialog-edit') %}
+                     {{ form.email(value=user.email, placeholder="email", class="form-control mb-2") }}
+                  {% else %}
+                     {{ form.email(placeholder="email", class="form-control mb-2") }}
+                  {% endif %}
+                  {{ form.email.label }}
+                    {% if form.email.errors %}
+                      {% for error in form.email.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+        
+                <div class="form-floating">
+                  {{ form.password(placeholder="password", class="form-control mb-2") }}
+                  {{ form.password.label }}
+                    {% if form.password.errors %}
+                      {% for error in form.password.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
                 </div>
 
+                <div class="form-floating">
+                  {{ form.confirm(placeholder="Confirm Password", class="form-control mb-2") }}
+                  {{ form.confirm.label }}
+                    {% if form.confirm.errors %}
+                      {% for error in form.confirm.errors %}
+                        <div class="alert alert-danger" role="alert">
+                          {{ error }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+
+                    <script>
+                     var errorElement;
+
+                     document.querySelector('#{{ dialog_id }} form').addEventListener('submit', function(event) {
+                        if (document.querySelector('#{{ dialog_id }} form input[name="password"]').value !== document.querySelector('#{{ dialog_id }} form input[name="confirm"]').value) {                        
+                           if (document.querySelectorAll('#{{ dialog_id }} form .form-floating').length > 0) {
+                            var lastFormFloatingElement = document.querySelectorAll('#{{ dialog_id }} form .form-floating')[document.querySelectorAll('#{{ dialog_id }} form .form-floating').length - 1];
+                            event.preventDefault();
+
+                            if (!errorElement) {
+                              errorElement = document.createElement('div');
+                              errorElement.className = 'alert alert-danger';
+                              errorElement.innerHTML = 'Passwords do not match';
+                              lastFormFloatingElement.after(errorElement);
+                            } 
+                           }                            
+                          }
+                          else {
+                           if (errorElement) {
+                              errorElement.remove();
+                           }                          
+                        }
+                      });
+                   </script>                                     
+                  </div>                
+        
                 <div class="form-group">
-                    <label class="form-check-label" for="is-admin-check">Is Admin:</label>
-                    <input type="checkbox" class="form-check-input" name="is-admin-check" checked="{{user.is_admin}}" id="is-admin-check">
+                    {{ form.is_admin(placeholder="is_admin", class="form-check-input mb-2") }}
+                    {{ form.is_admin.label }}  
                  </div> 
                 
                 <div class="form-group">

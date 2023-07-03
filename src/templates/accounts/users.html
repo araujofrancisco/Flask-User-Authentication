@@ -38,14 +38,14 @@
     </div>
 </div>
 
-{% with dialog_id = "dialog-add", action_url = url_for('users.home'),
+{% with dialog_id = "dialog-add", action_url = url_for('accounts.users'),
         dialog_title = "Add User", submit_btn = "Save", user = None %}
     {% include "dialog.html" %}
 {% endwith %}
 
 {% for user in users %}
-    {% with dialog_id = "dialog-edit" + loop.index|string, action_url = url_for('users.home'),
-            dialog_title = "Edit User", submit_btn = "Save", user = user %}
+    {% with dialog_id = "dialog-edit" + loop.index|string, action_url = url_for('accounts.users'),
+            dialog_title = "Edit User", submit_btn = "Update", user = user %}
         {% include "dialog.html" %}
     {% endwith %}
 {% endfor %}

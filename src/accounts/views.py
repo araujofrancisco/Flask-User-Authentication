@@ -9,6 +9,20 @@ from .forms import LoginForm, RegisterForm
 accounts_bp = Blueprint("accounts", __name__)
 
 
+def get_users():
+    session = db.session()
+    users = session.query(User).all()
+    return users
+
+
+def add_user(form):
+    user = User(email=form.email.data, password=form.password.data)
+    db.session.add(user)
+    db.session.commit()
+        
+    return User.query.filter_by(email=form.email.data).first()
+
+
 @accounts_bp.route("/register", methods=["GET", "POST"])
 def register():
     if not current_app.config["ALLOW_NEW_REGISTRATIONS"]:
@@ -19,9 +33,7 @@ def register():
         return redirect(url_for("core.home"))
     form = RegisterForm(request.form)
     if form.validate_on_submit():
-        user = User(email=form.email.data, password=form.password.data)
-        db.session.add(user)
-        db.session.commit()
+        user = add_user(form)
 
         login_user(user)
         flash("You registered and are now logged in. Welcome!", "success")
@@ -54,3 +66,22 @@ def logout():
     logout_user()
     flash("You were logged out.", "success")
     return redirect(url_for("accounts.login"))
+
+
+@accounts_bp.route("/users", methods=['GET','POST'])
+@login_required
+def users():
+    users = get_users()
+    
+    form = RegisterForm(request.form)
+    if form.validate_on_submit():
+        if "dialog-add" in form.action.data:                    
+            user = add_user(form)    
+        elif "dialog-edit" in form.action.data:
+            pass
+        else:
+            pass
+    else:
+        pass
+        
+    return render_template("accounts/users.html", **locals())
