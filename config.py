@@ -5,13 +5,12 @@ if DATABASE_URI.startswith("postgres://"):
     DATABASE_URI = DATABASE_URI.replace("postgres://", "postgresql://", 1)
 
 DATABASE_TEST_URI = config("DATABASE_TEST_URL")
-ALLOW_REGISTRATIONS = config("ALLOW_REGISTRATIONS", cast=bool)
 
 class Config(object):
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
-    SECRET_KEY = config("SECRET_KEY", default="guess-me")
+    SECRET_KEY = config("SECRET_KEY", default="my-secret-key")
     SQLALCHEMY_DATABASE_URI = DATABASE_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT_LOG_ROUNDS = 13
@@ -19,7 +18,7 @@ class Config(object):
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     PRESERVE_CONTEXT_ON_EXCEPTION = False
-    ALLOW_NEW_REGISTRATIONS = ALLOW_REGISTRATIONS
+    ALLOW_NEW_REGISTRATIONS = config("ALLOW_REGISTRATIONS", cast=bool)
 
 
 class DevelopmentConfig(Config):
